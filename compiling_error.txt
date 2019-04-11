@@ -1,0 +1,63 @@
+/tmp/ccWEPgZK.o: En la función `getPosX':
+Estructura.c:(.text+0x2e): referencia a `json_object_object_get_ex' sin definir
+Estructura.c:(.text+0x3a): referencia a `json_object_get_int' sin definir
+/tmp/ccWEPgZK.o: En la función `getPosY':
+Estructura.c:(.text+0x82): referencia a `json_object_object_get_ex' sin definir
+Estructura.c:(.text+0x8e): referencia a `json_object_get_int' sin definir
+/tmp/ccWEPgZK.o: En la función `getEstado':
+Estructura.c:(.text+0xd6): referencia a `json_object_object_get_ex' sin definir
+Estructura.c:(.text+0xe2): referencia a `json_object_get_int' sin definir
+/tmp/ccWEPgZK.o: En la función `getTipo':
+Estructura.c:(.text+0x12a): referencia a `json_object_object_get_ex' sin definir
+Estructura.c:(.text+0x136): referencia a `json_object_get_string' sin definir
+/tmp/ccWEPgZK.o: En la función `getIndex':
+Estructura.c:(.text+0x170): referencia a `json_object_array_get_idx' sin definir
+/tmp/ccWEPgZK.o: En la función `getLength':
+Estructura.c:(.text+0x192): referencia a `json_object_array_length' sin definir
+/tmp/ccWEPgZK.o: En la función `getValue':
+Estructura.c:(.text+0x1ca): referencia a `json_object_object_get_ex' sin definir
+/tmp/ccWEPgZK.o: En la función `getValue_Entero':
+Estructura.c:(.text+0x21a): referencia a `json_object_object_get_ex' sin definir
+Estructura.c:(.text+0x226): referencia a `json_object_get_int' sin definir
+/tmp/ccWEPgZK.o: En la función `getJson':
+Estructura.c:(.text+0x329): referencia a `json_tokener_parse' sin definir
+/tmp/ccWEPgZK.o: En la función `crearEntero':
+Estructura.c:(.text+0x353): referencia a `json_object_new_object' sin definir
+Estructura.c:(.text+0x361): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x37c): referencia a `json_object_object_add' sin definir
+/tmp/ccWEPgZK.o: En la función `crearString':
+Estructura.c:(.text+0x397): referencia a `json_object_new_object' sin definir
+Estructura.c:(.text+0x3a7): referencia a `json_object_new_string' sin definir
+Estructura.c:(.text+0x3c2): referencia a `json_object_object_add' sin definir
+/tmp/ccWEPgZK.o: En la función `crearArray':
+Estructura.c:(.text+0x3dd): referencia a `json_object_new_object' sin definir
+Estructura.c:(.text+0x3f8): referencia a `json_object_object_add' sin definir
+/tmp/ccWEPgZK.o: En la función `crearAlien':
+Estructura.c:(.text+0x418): referencia a `json_object_new_object' sin definir
+Estructura.c:(.text+0x426): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x43c): referencia a `json_object_object_add' sin definir
+Estructura.c:(.text+0x446): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x45c): referencia a `json_object_object_add' sin definir
+Estructura.c:(.text+0x466): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x47c): referencia a `json_object_object_add' sin definir
+Estructura.c:(.text+0x488): referencia a `json_object_new_string' sin definir
+Estructura.c:(.text+0x49e): referencia a `json_object_object_add' sin definir
+/tmp/ccWEPgZK.o: En la función `crearJson':
+Estructura.c:(.text+0x4be): referencia a `json_object_new_object' sin definir
+Estructura.c:(.text+0x4cc): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x4e2): referencia a `json_object_object_add' sin definir
+Estructura.c:(.text+0x4ec): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x502): referencia a `json_object_object_add' sin definir
+Estructura.c:(.text+0x50c): referencia a `json_object_new_int' sin definir
+Estructura.c:(.text+0x522): referencia a `json_object_object_add' sin definir
+Estructura.c:(.text+0x539): referencia a `json_object_object_add' sin definir
+/tmp/ccWEPgZK.o: En la función `crearAliens':
+Estructura.c:(.text+0x554): referencia a `json_object_new_array' sin definir
+Estructura.c:(.text+0x57d): referencia a `json_object_array_add' sin definir
+Estructura.c:(.text+0x5a2): referencia a `json_object_array_add' sin definir
+/tmp/ccWEPgZK.o: En la función `addElemento':
+Estructura.c:(.text+0x5cb): referencia a `json_object_array_add' sin definir
+/tmp/ccWEPgZK.o: En la función `main':
+Estructura.c:(.text+0x5e2): referencia a `json_object_new_array' sin definir
+Estructura.c:(.text+0x5eb): referencia a `json_object_new_array' sin definir
+collect2: error: ld returned 1 exit status

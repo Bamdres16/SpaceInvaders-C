@@ -1,0 +1,24 @@
+{	"vidas"  : 10,
+	"velocidad" : 10000,
+	"puntos" : 200,
+	"aliens" :
+	[
+		{"fila" : [
+			{"posx" : 101, "posy": 10, "estado": 1,"tipo": "pulpo"}
+			]},
+		{"fila" : [
+			{"posx" : 202, "posy": 105, "estado": 0,"tipo": "calamar"}
+			]},
+		{"fila" : [
+			{"posx" : 502, "posy": 60, "estado": 1,"tipo": "tigre"},
+			{"posx" : 750, "posy": 45, "estado": 0,"tipo": "calamar"}
+			]}
+
+	],
+	"bunkers" :
+	[
+		{"estado" : 100},
+		{"estado" : 100},
+		{"estado" : 100}
+	]
+}

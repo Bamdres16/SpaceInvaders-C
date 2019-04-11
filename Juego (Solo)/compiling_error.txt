@@ -1,0 +1,4 @@
+/home/brayan/Escritorio/SpaceInvaders/Juego (Solo)/main.c:6:10: fatal error: json/json.h: No existe el archivo o el directorio
+ #include <json/json.h>
+          ^~~~~~~~~~~~~
+compilation terminated.
