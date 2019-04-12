@@ -181,6 +181,29 @@ json_object *setPosY (json_object *array, size_t iterador, int valor){
 	}
 	return isSet;
 }
+
+json_object *setEstado (json_object *array, size_t iterador, int valor){
+	json_object *value = getIndex(array,iterador);
+	struct json_object *isSet = json_object_new_array();
+	size_t len = getLength(array);
+	for (size_t i = 0; i < len;i++){
+		if (i == iterador){
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(value)));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(value)));
+			json_object_object_add(obj,"estado",json_object_new_int(valor));
+			json_object_array_add(isSet,obj);
+
+		} else{
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(getIndex(array,i))));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(getIndex(array,i))));
+			json_object_object_add(obj,"estado",json_object_new_int(getEstado(getIndex(array,i))));
+			json_object_array_add(isSet,obj);
+		}
+	}
+	return isSet;
+}
 /*<<<<<<<<<<----------------------------->>>>>>>>>>
 								Funciones para crear un objeto
 Pone de un vez un objeto completo de la forma "tag" : valor, ya sea entero, string, array,

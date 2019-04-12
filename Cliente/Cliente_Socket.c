@@ -1,10 +1,11 @@
 //
 //  main.c
-//  ThreadClienteSpaceInvaders
+//  ThreadObserverClient
 //
-//  Created by Edgar Chaves on 4/11/19.
+//  Created by Edgar Chaves on 4/12/19.
 //  Copyright © 2019 Edgar Chaves. All rights reserved.
 //
+
 
 #include <stdio.h>
 #include <string.h>
@@ -14,22 +15,23 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <ncurses.h>
-#include <time.h> //seed for random
-#include<pthread.h>
 
-#define MAX_SIZE 50
+#include<pthread.h>
+#include <json-c/json.h>
+
+#define MAX_SIZE 100
+
+#include <stdio.h>
+#include <ncurses.h>
+#include <stdlib.h> //for srand() and rand()
+#include <unistd.h> //for usleep() available
+#include <time.h> //seed for random
 
 #include "../Estructura.c"
 
 
 
-
-
-
-
 int sock_desc;
-char client_message[2000];
 
 
 //************************CONSTANTES Y VARIABLES*************************************
@@ -93,7 +95,7 @@ json_object *invasores_json;
 //                              Escudos
 #define ANCHOBUNKERS 10
 const char *bunker[] = {"h", "H"};
-short int bunkers[144][3];
+//short int bunkers[144][3];
 json_object *bunkers_json;
 
 //**********************************************************************************
@@ -167,10 +169,12 @@ void configuracionJuego(int configuracionIncial) {
                 for (columna = 0; columna < ANCHOBUNKERS; columna++) { //Para cada bloque de escudo
                     if (fila == 2 && columna == 2) //Solamente 4 escudos en la fila inferior
                         columna = ANCHOBUNKERS-2;
-                    bunkers[x][0] = anchoSecciondeBloqueo + i*anchoSecciondeBloqueo*2 + columna; //setea X
-                    bunkers[x][1] = altoPantalla-ALTOJUGADOR-4+fila; //setea Y
-                    bunkers[x][2] = 2; //Acá se establece el estado del escudo
 
+                    json_object *bunk = json_object_new_object();
+                    json_object_object_add(bunk,"posx",json_object_new_int(anchoSecciondeBloqueo + i*anchoSecciondeBloqueo*2 + columna));
+                    json_object_object_add(bunk,"posy",json_object_new_int(altoPantalla-ALTOJUGADOR-4+fila));
+                    json_object_object_add(bunk,"estado",json_object_new_int(2));
+                    json_object_array_add(bunkers_json,bunk);
                     x++;
                 }
             }
@@ -308,13 +312,14 @@ void configuracionProyectil() {
     //TERCERO Y CUARTO: Verifica si el disparo del jugador o del invasor ha golpeado a los escudos, y se modifica el estado de los mismos
     if (posicionYdelDisparo >= altoPantalla-6 || posicionYdeBomba >= altoPantalla-6) {
         for (i = 0; i < 144; i++) {
-            if (bunkers[i][2]) { //Si el escudo está arriba
-                if (disparoTirado && posicionXdeDisparo == bunkers[i][0] && posicionYdelDisparo == bunkers[i][1]) {
-                    bunkers[i][2]--;
+            if (getEstado(getIndex(bunkers_json,i))==2 || getEstado(getIndex(bunkers_json,i)) == 1) { //Si el escudo está arriba
+                if (disparoTirado && posicionXdeDisparo == getPosX(getIndex(bunkers_json,i)) && posicionYdelDisparo == getPosY(getIndex(bunkers_json,i))) {
+
+                    bunkers_json = setEstado(bunkers_json,i,getEstado(getIndex(invasores_json,i))-1);
                     disparoTirado = FALSE;
                 }
-                if (bombaDisparada && posicionXdeBomba == bunkers[i][0] && posicionYdeBomba == bunkers[i][1]) {
-                    bunkers[i][2]--;
+                if (bombaDisparada && posicionXdeBomba == getPosX(getIndex(bunkers_json,i)) && posicionYdeBomba == getPosY(getIndex(bunkers_json,i))) {
+                    bunkers_json = setEstado(bunkers_json,i,getEstado(getIndex(invasores_json,i))-1);
                     bombaDisparada = FALSE;
                 }
             }
@@ -376,8 +381,8 @@ void displayObjects() {
 
     //Muestra a los escudos aún no destruídos
     for (i = 0; i < 144; i++) {
-        if (bunkers[i][2])
-            mvprintw(bunkers[i][1], bunkers[i][0], bunker[bunkers[i][2]-1]);
+        if (getEstado(getIndex(bunkers_json,i)) == 1 || getEstado(getIndex(bunkers_json,i))== 2)
+            mvprintw(getPosY(getIndex(bunkers_json,i)), getPosX(getIndex(bunkers_json,i)), bunker[getEstado(getIndex(bunkers_json,i))-1]);
     }
 
     //Muestra al proyectil cuando se dispara
@@ -438,7 +443,7 @@ void loop() {
                     posicionXdeDisparo = posicionXdeJugador+2;
                     posicionYdelDisparo = altoPantalla-3;
                     disparoTirado = TRUE;
-                    send(sock_desc,json_object_get_string(invasores_json),strlen(json_object_get_string(invasores_json)),0);
+                    send(sock_desc,json_object_get_string(bunkers_json),strlen(json_object_get_string(bunkers_json)),0);
 
 
 
@@ -558,6 +563,7 @@ void *inicioJuegoMain(){
     return 0;
 }
 
+
 void *cliente(){
 
     struct sockaddr_in serv_addr;
@@ -578,19 +584,32 @@ void *cliente(){
     }
 
     //printf("Connected successfully - Please enter string\n");
-
+    int n;
+    //while((n=recv(sock_desc,rbuff,2000,0))>0)
     while(1)
     {
-        send(sock_desc,sbuff,strlen(sbuff),0);
+        //send(sock_desc,sbuff,strlen(sbuff),0);
 
-        if(recv(sock_desc,rbuff,MAX_SIZE,0)==0){
+
+        //send(sock_desc, rbuff, MAX_SIZE, 0);
+
+        if(recv(sock_desc,rbuff,MAX_SIZE,0) == -1){
             printf("Error");
             exit(1);
-          }
-        else
-            fputs(rbuff,stdout);
 
-        bzero(rbuff,MAX_SIZE);//to clean buffer-->IMP otherwise previous word characters also came
+        }
+        if(strncmp(rbuff, "Parar", 4) == 0){
+            break;
+        }
+        if(strncmp(rbuff, "1", 1) == 0){
+            send(sock_desc, "RecibidoCrear", 100, 0);
+            bzero(rbuff,MAX_SIZE); // habia que eliminar el contenido del buffer.
+            //break;
+        }
+        //else
+        //  fputs(rbuff,stdout);
+
+        //bzero(rbuff,MAX_SIZE);//to clean buffer-->IMP otherwise previous word characters also came
     }
 
 
@@ -611,9 +630,9 @@ int main()
     pthread_create(&thread1, NULL, cliente, NULL);
     pthread_create(&thread, NULL, inicioJuegoMain, NULL);
 
+
     pthread_join(thread, NULL);
     pthread_join(thread1, NULL);
-
 
 
 
