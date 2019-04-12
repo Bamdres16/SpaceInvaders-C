@@ -18,6 +18,7 @@
 int main()
 {
     char buf[100];
+    char inv[155][3];
     char bufParar[] = {"0"};
     char bufCrearAlien[] = {"1"};
     char bufEliminarAlien[] = {"2"};
@@ -39,7 +40,7 @@ int main()
 
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = htonl(INADDR_ANY);
-    server.sin_port = 3005; //3002
+    server.sin_port = 3000; //3002
 
     k = bind(sock_desc,(struct sockaddr*)&server,sizeof(server));
     if(k == -1)
@@ -79,6 +80,7 @@ int main()
         fgets(buf,100,stdin);
 
         //Comandos para poder controlar al cliente:
+        char result[100];
 
         if(strncmp(buf, "parar", 5) == 0){
             printf("Parar");
@@ -88,8 +90,10 @@ int main()
         }
 
         if(strncmp(buf, "crear", 5) == 0){
-            printf("Se envio alien");
-            send (temp_sock_desc, bufCrearAlien , 100, 0);
+            printf("Se envio alien\n");
+            char result[100];
+
+            send (temp_sock_desc, inv , 100, 0);
 
         }
 

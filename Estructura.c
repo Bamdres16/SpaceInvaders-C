@@ -53,6 +53,8 @@ json_object* getIndex (json_object *objeto, size_t iterador){
 	return value;
 	free(value);
 }
+
+
 // Retorna el largo del arreglo
 int getLength (json_object *fila_arr){
 	return json_object_array_length(fila_arr);
@@ -95,6 +97,89 @@ json_object* getJson (const char* name){
 	fclose(fp);
 	return json_tokener_parse(buffer);
 	free(fp);
+}
+
+// Delete position of array
+json_object *deleteIndex (json_object *array, size_t iterador){
+	struct json_object *value = json_object_new_array();
+	size_t len = getLength(array);
+	for (size_t i = 0; i < len;i++){
+		if (i == iterador){
+			continue;
+		} else {
+			json_object_array_add(value,getIndex(array,i));
+		}
+	}
+	return value;
+}
+
+json_object *setFalse (json_object *array, size_t iterador){
+	json_object *value = getIndex(array,iterador);
+	struct json_object *isSet = json_object_new_array();
+	size_t len = getLength(array);
+	for (size_t i = 0; i < len;i++){
+		if (i == iterador){
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(value)));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(value)));
+			json_object_object_add(obj,"estado",json_object_new_int(0));
+			json_object_array_add(isSet,obj);
+
+		} else{
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(getIndex(array,i))));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(getIndex(array,i))));
+			json_object_object_add(obj,"estado",json_object_new_int(getEstado(getIndex(array,i))));
+			json_object_array_add(isSet,obj);
+		}
+	}
+	return isSet;
+}
+
+json_object *setPosX (json_object *array, size_t iterador, int valor){
+	json_object *value = getIndex(array,iterador);
+	struct json_object *isSet = json_object_new_array();
+	size_t len = getLength(array);
+	for (size_t i = 0; i < len;i++){
+		if (i == iterador){
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(valor));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(value)));
+			json_object_object_add(obj,"estado",json_object_new_int(getEstado(value)));
+			json_object_array_add(isSet,obj);
+
+		} else{
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(getIndex(array,i))));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(getIndex(array,i))));
+			json_object_object_add(obj,"estado",json_object_new_int(getEstado(getIndex(array,i))));
+			json_object_array_add(isSet,obj);
+		}
+	}
+	return isSet;
+}
+
+json_object *setPosY (json_object *array, size_t iterador, int valor){
+	json_object *value = getIndex(array,iterador);
+	struct json_object *isSet = json_object_new_array();
+	size_t len = getLength(array);
+	for (size_t i = 0; i < len;i++){
+		if (i == iterador){
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(value)));
+			json_object_object_add(obj,"posy",json_object_new_int(valor));
+			json_object_object_add(obj,"estado",json_object_new_int(getEstado(value)));
+			json_object_array_add(isSet,obj);
+
+		} else{
+			json_object *obj = json_object_new_object();
+			json_object_object_add(obj,"posx",json_object_new_int(getPosX(getIndex(array,i))));
+			json_object_object_add(obj,"posy",json_object_new_int(getPosY(getIndex(array,i))));
+			json_object_object_add(obj,"estado",json_object_new_int(getEstado(getIndex(array,i))));
+			json_object_array_add(isSet,obj);
+		}
+	}
+	return isSet;
 }
 /*<<<<<<<<<<----------------------------->>>>>>>>>>
 								Funciones para crear un objeto
@@ -158,7 +243,7 @@ void addElemento(json_object *array, json_object *elemento){
 	json_object_array_add(array,elemento);
 }
 
-int main(int argc, char **argv) {
+/*int main(int argc, char **argv) {
 
 	json_object *array1 = json_object_new_array();
 	json_object *array2 = json_object_new_array();
@@ -174,7 +259,7 @@ int main(int argc, char **argv) {
 	alien = getAlien(0,1,json);
 	printf("%d\n", getValue_Entero(json,"puntos"));
 
-}
+}*/
 
 /* Ejemplo de como leer un archivo y obtener un alien en especifico segun fila y columna
 struct json_object *parsed_json;

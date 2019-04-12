@@ -150,7 +150,6 @@ void configuracionJuego(int configuracionIncial) {
 
 
 //**********************************************************************************
-
 //                      Configuraciones para los Invasores
 
 void configuracionInvasores() {
@@ -235,6 +234,7 @@ void configuracionProyectil() {
             if (invasores[i][2]) { //Si el invasor ha sido tocado por un proyectil...
                 if (invasores[i][0] <= posicionXdeDisparo && invasores[i][0]+ANCHOINVASOR >= posicionXdeDisparo && invasores[i][1] <= posicionYdelDisparo && invasores[i][1]+ALTOINVASOR >= posicionYdelDisparo) {
                     invasores[i][2] = FALSE;
+                  
                     numeroDeInvasores--;
                     // Enviar al servidor que se eliminó
                     disparoTirado = FALSE;
@@ -317,9 +317,9 @@ void displayObjects() {
         if (i == 0)
         currentInvader = &invasoresCalamar;
         else if (i > 2)
-        currentInvader = &invasoresPulpo;
-        else
         currentInvader = &invasoresCancrejo;
+        else
+        currentInvader = &invasoresPulpo;
 
         //Si el invasor no ha sido golpeado, se sigue mostrando en pantalla al invasor
         for (j = 0; j < columnasDeInvasores; j++) {

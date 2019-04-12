@@ -16,7 +16,7 @@
 int main(){
 
     //Mensajes predeterminados al servidor:--------------------------;
-    char buf[100];
+    char buf [100];
     char buf1[] = {'h','o','l','a'};
     char bufExitoCrearAlien[] = {"Exito al crear Alien"};
     char bufExitoEliminarAlien[] = {"Exito al eliminar Alien"};
@@ -34,7 +34,7 @@ int main(){
 
     client.sin_family = AF_INET;
     client.sin_addr.s_addr = inet_addr("192.168.0.5"); // 192.168.100.26
-    client.sin_port = 3005; //3002
+    client.sin_port = 3000; //3002
 
     k = connect(sock_desc,(struct sockaddr*)&client,sizeof(client));
     if(k == -1){
@@ -60,30 +60,20 @@ int main(){
 
         k = recv(sock_desc,buf,100,0);
 
-        //Prueba
-        printf("\n %i", strncmp(buf, "1", 1));
 
-        if(strncmp(buf, "0", 1) == 0){
-            break;
-        }
 
-        if (strncmp(buf, "1", 1) == 0){
-            printf("Recibido crear");
-            send(sock_desc,bufExitoCrearAlien,100,0);
-        }
 
-        if(strncmp(buf, "2", 1) == 0){
-            printf("Recibido eliminar");
-            send(sock_desc,bufExitoEliminarAlien,100,0);
-        }
 
-        if(k == -1){
-            printf("Error en el recibo del mensaje...");
-            exit(1);
-        }
-        printf(" \n Mensaje obtenido del servidor : %s",buf);
+
+          int *n1;
+
+          printf("Direccion en cliente: %s\n", buf);
+          sscanf(buf, "%p", &n1);
+          printf("El valor en esa direccion es: %d\n", *n1);
+
+
     }
-    close(sock_desc);
+    pclose(sock_desc);
     exit(0);
     return 0;
 }
